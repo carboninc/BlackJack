@@ -9,16 +9,16 @@ module Game
   end
 
   def starting_cards
-    @player.cards << @deck[0]
-    @player.cards << @deck[1]
-    @dealer.cards << @deck[2]
-    @dealer.cards << @deck[3]
+    @deck.take(4).each.with_index do |card, index|
+      next @player.cards << card if (index % 2).zero?
+      @dealer.cards << card
+    end
   end
 
   def sum_points
     sum = 0
     @player.cards.each do |card|
-      sum += Integer(card[0]) if card[0].to_i > 2
+      sum += Integer(card[0]) unless card[0].to_i.zero?
       sum += 1 if card[0] == 'A'
       sum += 10 if card[0].to_i.zero?
     end
@@ -33,5 +33,4 @@ module Game
     puts "Карты #{@dealer.name}"
     2.times { puts '*' }
   end
-
 end
