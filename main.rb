@@ -5,10 +5,11 @@ require_relative 'config'
 require_relative 'core/modules/menu'
 
 # Classes
-require_relative 'core/cards'
-require_relative 'core/dealer'
-require_relative 'core/game'
 require_relative 'core/player'
+require_relative 'core/dealer'
+require_relative 'core/cards'
+require_relative 'core/game'
+
 # ------------------------------------
 
 # Start Here
