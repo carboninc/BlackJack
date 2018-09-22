@@ -10,7 +10,7 @@ module Game
   end
 
   def starting_cards
-    @deck.take(4).each.with_index do |card, index|
+    @deck.keys.take(4).each.with_index do |card, index|
       next @player.cards << card if (index % 2).zero?
       @dealer.cards << card
     end
@@ -22,18 +22,22 @@ module Game
   def sum_points
     sum = 0
     @player.cards.each do |card|
-      sum += Integer(card[0]) unless card[0].to_i.zero?
-      sum += 1 if card[0] == 'A'
-      sum += 10 if card[0].to_i.zero?
+      sum += @deck[card]
+      if card[0] == 'A'
+        sum -= 9 if sum > 21
+        sum += 1 if sum < 21
+      end
     end
     @sum_points = sum
   end
 
   def give_cards
     puts 'Раздача карт'
+    puts '----------------------------'
     puts "Карты #{@player.name}"
     puts @player.cards
     puts "Сумма очков: #{sum_points}"
+    puts '----------------------------'
     puts "Карты #{@dealer.name}"
     2.times { puts '*' }
   end
