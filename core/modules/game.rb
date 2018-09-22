@@ -4,6 +4,7 @@ module Game
     @player = Player.new(player)
     @dealer = Dealer.new
     @deck = Cards.new.create_deck
+    @bank = 0
     starting_cards
     give_cards
   end
@@ -13,6 +14,9 @@ module Game
       next @player.cards << card if (index % 2).zero?
       @dealer.cards << card
     end
+    @player.bank -= 10
+    @dealer.bank -= 10
+    @bank += 20
   end
 
   def sum_points
