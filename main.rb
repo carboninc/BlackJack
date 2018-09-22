@@ -21,4 +21,4 @@ end
 
 puts 'Добро пожаловать в игру Black Jack!'
 
-# BlackJack.new.start
+BlackJack.new.start
