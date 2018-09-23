@@ -1,5 +1,6 @@
 # Game Module
 module Game
+  include Config
   def start_game(player)
     @player = Player.new(player)
     @dealer = Dealer.new
@@ -7,7 +8,7 @@ module Game
     @game_deck = @deck.clone
     @bank = 0
     starting_cards
-    give_cards_menu(@dealer.cards.length)
+    give_cards_menu
   end
 
   def run_player(selected)
@@ -15,60 +16,39 @@ module Game
     when 1
       run_dealer
     when 2
-      take_cards(@player, 1)
-      give_cards_menu(@dealer.cards.length)
-      run_dealer
+      run_block
     when 3
       open_cards
     else
-      puts 'Ошибка ввода, такого варианта нет!'
-      run_player_menu
+      error_input(:run_player_menu)
     end
   end
 
   def run_dealer
-    return run_player_menu if @dealer.points >= 17
+    return open_cards if @dealer.cards.length >= 3
+    pass_dealer(:run_player_menu)
     take_cards(@dealer, 1)
-    give_cards_menu(@dealer.cards.length)
+    puts 'Диллер взял карту'
+    give_cards_menu
   end
 
   def open_cards
-    if @player.points > @dealer.points
-      puts 'Вы выиграли'
-      @player.bank += @bank
-      new_game
-    elsif @player.points < @dealer.points
-      puts 'Вы проиграли'
-      @dealer.bank += @bank
-      new_game
-    else
-      puts 'Ничья'
-      @player.bank += 10
-      @dealer.bank += 10
-      new_game
-    end
+    console_separator
+    end_game_menu
+    who_winner
+    new_game_menu
   end
 
-  def new_game
-    puts 'Хотите сыграть еще раз?'
-    puts '1. Да'
-    puts '2. Нет'
-    new_game = gets.chomp.to_i
-
-    case new_game
+  def new_game(selected)
+    case selected
     when 1
-      @bank = 0
-      @player.cards = []
-      @dealer.cards = []
-      @player.points = 0
-      @dealer.points = 0
+      reset_game
       starting_cards
-      give_cards_menu(2)
+      give_cards_menu
     when 2
       abort('Всего доброго!')
     else
-      puts 'Ошибка ввода, такого варианта нет!'
-      new_game
+      error_input(:new_game_menu)
     end
   end
 
@@ -98,10 +78,26 @@ module Game
     someone.cards.each do |card|
       sum += @deck[card]
       if card[0] == 'A'
-        sum -= 9 if sum > 21
-        sum += 1 if sum < 21
+        next sum -= 9 if sum >= BJ || someone.points >= BJ
+        sum += 1
       end
     end
     someone.points = sum
+  end
+
+  def run_block
+    run_block = proc do
+      return run_player(0) if @player.cards.length >= 3
+      take_cards(@player, 1)
+      give_cards_menu
+      run_dealer
+    end
+    run_block.call
+  end
+
+  def who_winner
+    player = @player.points
+    dealer = @dealer.points
+    compare_points(player, dealer)
   end
 end

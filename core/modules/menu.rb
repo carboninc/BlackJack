@@ -1,5 +1,6 @@
 # BlackJack Menu
 module Menu
+  include Config
   def start
     puts 'Для начала игры укажите свое имя:'
     name = gets.chomp.capitalize
@@ -8,16 +9,12 @@ module Menu
     start_game(name)
   end
 
-  def give_cards_menu(dealer_cards)
+  def give_cards_menu
+    return open_cards if @player.cards.length == 3 && @dealer.cards.length == 3
+    console_separator
     give_cards_start_menu
-    puts "Карты #{@player.name}"
-    puts @player.cards
-    puts "Сумма очков: #{sum_points(@player)}"
-    puts '----------------------------'
-    puts "Карты #{@dealer.name}"
-    dealer_cards.times { puts '*' }
-    sum_points(@dealer)
-    puts '----------------------------'
+    give_cards_player_menu
+    give_cards_dealer_menu
     run_player_menu
   end
 
@@ -31,12 +28,48 @@ module Menu
     run_player(selected)
   end
 
+  def new_game_menu
+    puts 'Хотите сыграть еще раз?'
+    puts '1. Да'
+    puts '2. Нет'
+    selected = gets.chomp.to_i
+    new_game(selected)
+  end
+
+  def end_game_menu
+    puts 'Игра окончена!'
+    puts "Карты #{@player.name}"
+    puts @player.cards
+    puts "Сумма очков: #{sum_points(@player)}"
+    puts '----------------------------'
+    puts "Карты #{@dealer.name}"
+    puts @dealer.cards
+    puts "Сумма очков: #{sum_points(@dealer)}"
+    console_separator
+  end
+
   private
 
   def give_cards_start_menu
     puts "В банке: #{@bank}$"
     puts "На счету игрока: #{@player.bank}$"
     puts "На счету диллера: #{@dealer.bank}$"
+    puts '----------------------------'
+  end
+
+  def give_cards_player_menu
+    puts "Карты #{@player.name}"
+    puts @player.cards
+    puts "Сумма очков: #{sum_points(@player)}"
+    return open_cards if @player.points > BJ
+    puts '----------------------------'
+  end
+
+  def give_cards_dealer_menu
+    puts "Карты #{@dealer.name}"
+    @dealer.cards.length.times { puts '*' }
+    sum_points(@dealer)
+    return open_cards if @dealer.points > BJ
     puts '----------------------------'
   end
 end
