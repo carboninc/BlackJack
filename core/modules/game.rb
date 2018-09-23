@@ -7,7 +7,7 @@ module Game
     @game_deck = @deck.clone
     @bank = 0
     starting_cards
-    give_cards_menu
+    give_cards_menu(2)
   end
 
   def run_player(selected)
@@ -24,15 +24,22 @@ module Game
     end
   end
 
+  def run_dealer
+    return run_player_menu if @dealer.points >= 17
+    take_cards(@dealer, 1)
+    sum_points(@dealer)
+    give_cards_menu(3)
+  end
+
   private
 
   def starting_cards
-    give_cards(@player, 2)
-    give_cards(@dealer, 2)
+    take_cards(@player, 2)
+    take_cards(@dealer, 2)
     bets
   end
 
-  def give_cards(someone, number_of_cards)
+  def take_cards(someone, number_of_cards)
     @game_deck.keys.take(number_of_cards).each do |card|
       someone.cards << card
       @game_deck.delete(card)
@@ -45,15 +52,15 @@ module Game
     @bank += 20
   end
 
-  def sum_points
+  def sum_points(someone)
     sum = 0
-    @player.cards.each do |card|
+    someone.cards.each do |card|
       sum += @deck[card]
       if card[0] == 'A'
         sum -= 9 if sum > 21
         sum += 1 if sum < 21
       end
     end
-    @player.points = sum
+    someone.points = sum
   end
 end

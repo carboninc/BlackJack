@@ -6,14 +6,15 @@ module Menu
     start_game(name)
   end
 
-  def give_cards_menu
+  def give_cards_menu(dealer_cards)
     give_cards_start_menu
     puts "Карты #{@player.name}"
     puts @player.cards
-    puts "Сумма очков: #{sum_points}"
+    puts "Сумма очков: #{sum_points(@player)}"
     puts '----------------------------'
     puts "Карты #{@dealer.name}"
-    2.times { puts '*' }
+    dealer_cards.times { puts '*' }
+    sum_points(@dealer)
     run_player_menu
   end
 
