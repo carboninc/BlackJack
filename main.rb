@@ -5,6 +5,9 @@ require_relative 'config'
 require_relative 'core/modules/menu'
 require_relative 'core/modules/game'
 
+# Helpers
+require_relative 'core/modules/helpers'
+
 # Classes
 require_relative 'core/player'
 require_relative 'core/dealer'
@@ -17,8 +20,12 @@ class BlackJack
   include Config
   include Menu
   include Game
+  include Helpers
 end
 
 puts 'Добро пожаловать в игру Black Jack!'
+puts ''
+puts '----------------------------'
+puts ''
 
 BlackJack.new.start
