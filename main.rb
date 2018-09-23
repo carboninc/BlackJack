@@ -8,6 +8,9 @@ require_relative 'core/modules/game'
 # Helpers
 require_relative 'core/modules/helpers'
 
+# Validation
+require_relative 'core/modules/validation'
+
 # Classes
 require_relative 'core/player'
 require_relative 'core/dealer'

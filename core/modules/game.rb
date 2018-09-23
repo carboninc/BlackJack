@@ -1,6 +1,7 @@
 # Game Module
 module Game
   include Config
+
   def start_game(player)
     @player = Player.new(player)
     @dealer = Dealer.new
@@ -9,6 +10,9 @@ module Game
     @bank = 0
     starting_cards
     give_cards_menu
+  rescue RuntimeError => e
+    puts "Ошибка: #{e.message}"
+    start
   end
 
   def run_player(selected)

@@ -2,6 +2,7 @@
 class Cards
   attr_reader :cards
   attr_accessor :deck
+
   def initialize
     @deck = {}
   end

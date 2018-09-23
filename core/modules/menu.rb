@@ -1,6 +1,7 @@
 # BlackJack Menu
 module Menu
   include Config
+
   def start
     puts 'Для начала игры укажите свое имя:'
     name = gets.chomp.capitalize
