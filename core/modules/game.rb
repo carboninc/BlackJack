@@ -4,16 +4,42 @@ module Game
     @player = Player.new(player)
     @dealer = Dealer.new
     @deck = Cards.new.create_deck
+    @game_deck = @deck.clone
     @bank = 0
     starting_cards
-    give_cards
+    give_cards_menu
   end
 
-  def starting_cards
-    @deck.keys.take(4).each.with_index do |card, index|
-      next @player.cards << card if (index % 2).zero?
-      @dealer.cards << card
+  def run_player(selected)
+    case selected
+    when 1
+      run_dealer
+    when 2
+      # Some kind of action
+    when 3
+      # Some kind of action
+    else
+      puts 'Ошибка ввода, такого варианта нет!'
+      run_player_menu
     end
+  end
+
+  private
+
+  def starting_cards
+    give_cards(@player, 2)
+    give_cards(@dealer, 2)
+    bets
+  end
+
+  def give_cards(someone, number_of_cards)
+    @game_deck.keys.take(number_of_cards).each do |card|
+      someone.cards << card
+      @game_deck.delete(card)
+    end
+  end
+
+  def bets
     @player.bank -= 10
     @dealer.bank -= 10
     @bank += 20
@@ -28,17 +54,6 @@ module Game
         sum += 1 if sum < 21
       end
     end
-    @sum_points = sum
-  end
-
-  def give_cards
-    puts 'Раздача карт'
-    puts '----------------------------'
-    puts "Карты #{@player.name}"
-    puts @player.cards
-    puts "Сумма очков: #{sum_points}"
-    puts '----------------------------'
-    puts "Карты #{@dealer.name}"
-    2.times { puts '*' }
+    @player.points = sum
   end
 end
