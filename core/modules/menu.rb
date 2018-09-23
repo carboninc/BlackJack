@@ -11,7 +11,6 @@ module Menu
   end
 
   def give_cards_menu
-    return open_cards if @player.cards.length == 3 && @dealer.cards.length == 3
     console_separator
     give_cards_start_menu
     give_cards_player_menu
