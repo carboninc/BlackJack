@@ -30,7 +30,7 @@ module Game
 
   def run_dealer
     return open_cards if @dealer.cards.length >= 3
-    pass_dealer(:run_player_menu)
+    pass_dealer(:give_cards_menu)
     take_cards(@dealer, 1)
     puts 'Диллер взял карту'
     give_cards_menu
@@ -82,7 +82,7 @@ module Game
     someone.cards.each do |card|
       sum += @deck[card]
       if card[0] == 'A'
-        next sum -= 9 if sum >= BJ || someone.points >= BJ
+        next sum -= 9 if sum >= BJ || someone.points > BJ
         sum += 1
       end
     end
@@ -93,8 +93,8 @@ module Game
     run_block = proc do
       return run_player(0) if @player.cards.length >= 3
       take_cards(@player, 1)
-      give_cards_menu
-      run_dealer
+      sum_points(@player)
+      send(:run_dealer)
     end
     run_block.call
   end
