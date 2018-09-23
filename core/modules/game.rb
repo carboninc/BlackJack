@@ -32,6 +32,7 @@ module Game
     return open_cards if @dealer.cards.length >= 3
     pass_dealer(:give_cards_menu)
     take_cards(@dealer, 1)
+    console_separator
     puts 'Диллер взял карту'
     give_cards_menu
   end

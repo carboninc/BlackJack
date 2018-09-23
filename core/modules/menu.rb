@@ -41,11 +41,11 @@ module Menu
     puts 'Игра окончена!'
     puts "Карты #{@player.name}"
     puts @player.cards
-    puts "Сумма очков: #{sum_points(@player)}"
+    puts "Сумма очков: #{@player.points}"
     puts '----------------------------'
     puts "Карты #{@dealer.name}"
     puts @dealer.cards
-    puts "Сумма очков: #{sum_points(@dealer)}"
+    puts "Сумма очков: #{@dealer.points}"
     console_separator
   end
 
