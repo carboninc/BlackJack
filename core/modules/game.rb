@@ -83,7 +83,7 @@ module Game
     someone.cards.each do |card|
       sum += @deck[card]
       if card[0] == 'A'
-        next sum -= 9 if sum >= BJ || someone.points + 10 >= BJ
+        next sum -= 9 if someone.points > BJ
         sum += 1
       end
     end
