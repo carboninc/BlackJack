@@ -84,12 +84,16 @@ class Menu
     when 1
       @game.run_dealer
     when 2
-      return choosing_run_player(0) if @game.player.cards.length >= 3
-      @game.run_player
+      check_run_player
     when 3
       @game.open_cards
     else
       error_input(:run_player)
     end
+  end
+
+  def check_run_player
+    return choosing_run_player(0) if @game.player.cards.length >= 3
+    @game.run_player
   end
 end
