@@ -80,13 +80,12 @@ module Game
 
   def sum_points(someone)
     sum = 0
+    ace = false
     someone.cards.each do |card|
       sum += @deck[card]
-      if card[0] == 'A'
-        next sum -= 9 if someone.points > BJ
-        sum += 1
-      end
+      ace = true if card[0] == 'A'
     end
+    sum += 10 if ace == true && sum + 10 <= BJ
     someone.points = sum
   end
 

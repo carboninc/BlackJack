@@ -18,7 +18,8 @@ class Cards
 
   def create_cards
     numbers = Hash[('2'..'10').collect { |card| [card.to_s, card.to_i] }]
-    images = Hash[%w[J Q K A].collect { |card| [card.to_s, 10] }]
+    images = Hash[%w[J Q K].collect { |card| [card.to_s, 10] }]
+    images['A'] = 1
     @cards = numbers.merge(images)
   end
 
