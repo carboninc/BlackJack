@@ -1,12 +1,9 @@
 # Global Settings
 require_relative 'config'
 
-# Modules
-require_relative 'core/modules/menu'
-require_relative 'core/modules/game'
-
 # Helpers
-require_relative 'core/modules/helpers'
+require_relative 'core/modules/shared_helpers'
+require_relative 'core/modules/game_helpers'
 
 # Validation
 require_relative 'core/modules/validation'
@@ -15,20 +12,16 @@ require_relative 'core/modules/validation'
 require_relative 'core/player'
 require_relative 'core/dealer'
 require_relative 'core/cards'
+require_relative 'core/game'
+require_relative 'core/menu'
 
 # ------------------------------------
-
-# Start Here
-class BlackJack
-  include Config
-  include Menu
-  include Game
-  include Helpers
-end
 
 puts 'Добро пожаловать в игру Black Jack!'
 puts ''
 puts '----------------------------'
 puts ''
+puts 'Для начала игры введите свое имя'
+name = gets.chomp
 
-BlackJack.new.start
+Game.new(name).start_game

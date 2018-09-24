@@ -16,4 +16,9 @@ class Player
     @points = 0
     validate!
   end
+
+  def reset
+    @cards = []
+    @points = 0
+  end
 end
