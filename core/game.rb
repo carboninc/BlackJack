@@ -75,8 +75,8 @@ class Game
   end
 
   def bets
-    @player.bank -= 10
-    @dealer.bank -= 10
+    @player.bank -= BET
+    @dealer.bank -= BET
     @bank += 20
   end
 
@@ -99,7 +99,7 @@ class Game
   end
 
   def draw
-    @player.bank += 10
-    @dealer.bank += 10
+    @player.bank += BET
+    @dealer.bank += BET
   end
 end
