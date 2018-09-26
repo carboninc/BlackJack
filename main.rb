@@ -3,7 +3,7 @@ require_relative 'config'
 
 # Helpers
 require_relative 'core/modules/shared_helpers'
-require_relative 'core/modules/game_helpers'
+require_relative 'core/modules/menu_helpers'
 
 # Validation
 require_relative 'core/modules/validation'
@@ -24,4 +24,5 @@ puts ''
 puts 'Для начала игры введите свое имя'
 name = gets.chomp
 
-Game.new(name).start_game
+game = Game.new(name)
+Menu.new(game).start_game

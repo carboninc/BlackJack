@@ -2,12 +2,10 @@
 class Game
   include Config
   include SharedHelpers
-  include GameHelpers
 
   attr_reader :player, :dealer, :cards, :bank
 
   def initialize(name)
-    @menu = Menu.new(self)
     @player = Player.new(name)
     @dealer = Dealer.new
     @deck = Cards.new.create_deck
@@ -17,11 +15,6 @@ class Game
     puts "Ошибка: #{e.message}"
     console_separator
     system('ruby main.rb') # It was made out of curiosity, do not scold =)
-  end
-
-  def start_game
-    starting_cards
-    @menu.game_table
   end
 
   def starting_cards
@@ -38,20 +31,22 @@ class Game
   end
 
   def run_dealer
-    check_open_cards
-    check_pass_dealer
-
     take_card(@dealer)
-    console_separator
-    puts 'Диллер взял карту'
-    @menu.game_table
   end
 
-  def open_cards
-    console_separator
-    @menu.end_game
-    who_winner
-    @menu.new_game
+  def who_winner
+    player = @player.points
+    dealer = @dealer.points
+    compare_points(player, dealer)
+  end
+
+  def reset_game
+    check_money
+    @player.reset
+    @dealer.reset
+    @bank = 0
+    @deck = Cards.new.create_deck
+    @cards = @deck.keys
   end
 
   private
@@ -79,24 +74,32 @@ class Game
     sum_points(someone)
   end
 
-  def check_pass_dealer
-    pass_dealer = proc do
-      console_separator
-      puts 'Диллер пропустил ход'
-      @menu.game_table
-    end
-    pass_dealer.call if @dealer.points >= 17
-  end
-
   def bets
     @player.bank -= 10
     @dealer.bank -= 10
     @bank += 20
   end
 
-  def who_winner
-    player = @player.points
-    dealer = @dealer.points
-    compare_points(player, dealer)
+  def check_money
+    abort('У вас не хватает денег! Приходите позже') if @player.bank.zero?
+    abort('У диллера нет денег! Приходите позже') if @dealer.bank.zero?
+  end
+
+  def compare_points(player, dealer)
+    if (player > dealer && player <= BJ) || dealer > BJ
+      puts 'Вы выиграли'
+      @player.bank += @bank
+    elsif player < dealer || player > BJ
+      puts 'Вы проиграли'
+      @dealer.bank += @bank
+    else
+      puts 'Ничья'
+      draw
+    end
+  end
+
+  def draw
+    @player.bank += 10
+    @dealer.bank += 10
   end
 end

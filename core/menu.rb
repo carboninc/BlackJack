@@ -2,9 +2,15 @@
 class Menu
   include Config
   include SharedHelpers
+  include MenuHelpers
 
   def initialize(game)
     @game = game
+  end
+
+  def start_game
+    @game.starting_cards
+    game_table
   end
 
   def game_table
@@ -16,7 +22,7 @@ class Menu
   end
 
   def run_player
-    @game.check_open_cards
+    check_open_cards
     puts 'Ваш ход, выберите действие:'
     puts '----------------------------'
     puts '1. Пропустить'
@@ -24,6 +30,22 @@ class Menu
     puts '3. Открыть карты'
     selected = gets.chomp.to_i
     choosing_run_player(selected)
+  end
+
+  def run_dealer
+    check_open_cards
+    check_pass_dealer
+    @game.run_dealer
+    console_separator
+    puts 'Диллер взял карту'
+    game_table
+  end
+
+  def open_cards
+    console_separator
+    end_game
+    @game.who_winner
+    new_game
   end
 
   def new_game
@@ -82,18 +104,13 @@ class Menu
   def choosing_run_player(selected)
     case selected
     when 1
-      @game.run_dealer
+      run_dealer
     when 2
       check_run_player
     when 3
-      @game.open_cards
+      open_cards
     else
       error_input(:run_player)
     end
-  end
-
-  def check_run_player
-    return choosing_run_player(0) if @game.player.cards.length >= 3
-    @game.run_player
   end
 end
