@@ -7,6 +7,7 @@ module MenuHelpers
   def check_run_player
     return choosing_run_player(0) if @game.player.cards.length >= 3
     @game.run_player
+    run_dealer
     game_table
   end
 

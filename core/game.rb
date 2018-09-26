@@ -27,7 +27,6 @@ class Game
 
   def run_player
     take_card(@player)
-    run_dealer
   end
 
   def run_dealer
